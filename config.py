@@ -29,8 +29,6 @@ class Config(object):
         self.n_channel = 3  # channel dimension
         self.n_class = 5  # Final output classes
 
-        self.result = '/home/deep1/17145213/data/kfold/20/ST/fin2'
-        self.model_pth = '/home/deep1/17145213/data/kfold/20/ST/fin2'
+        self.result = ''
+        self.model_pth = ''
         
-        self.current_w = 'current.pth'
-        self.best = 'best.pth'
