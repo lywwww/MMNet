@@ -1,5 +1,3 @@
-import time
-from apex import amp
 from tqdm import tqdm
 import numpy as np
 import torch
@@ -16,25 +14,9 @@ from utils.util import *
 import warnings
 warnings.filterwarnings('ignore')
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
-training_files = ['/home/deep1/17145213/data/edf20/edf20.npz']
-#'/home/deep1/17145213/data/edf197/ST_all.npz'
-
-# # 保存当前模型的权重，并且更新最佳的模型权重
-# def save_ckpt(state, is_best, model_save_dir):
-#     current_w = os.path.join(model_save_dir, cfg.current_w)
-#     best_w = os.path.join(model_save_dir, cfg.best_w)
-#     torch.save(state, current_w)
-#     if is_best: shutil.copyfile(current_w, best_w)
+training_files = ['']
 
 
-# 保存当前模型的权重，并且更新最佳的模型权重
-def save_ckpt(state, is_best, model_save):
-    current_w = os.path.join(cfg.model_pth, cfg.current_w)
-    best_w = model_save
-    torch.save(state, current_w)
-    if is_best: shutil.copyfile(current_w, best_w)
-    
 cfg = Config()
 if not os.path.exists(cfg.model_pth):
     os.makedirs(cfg.model_pth)
@@ -71,7 +53,6 @@ for fold, (train_ids, val_ids) in enumerate(kfold.split(train_dataset)):
     test_acc = MetricTracker()
     test_fscore = MetricTracker()
     test_kappa = MetricTracker()
-    max_fscore, max_acc, max_k = -1, -1, -1
     
     
     #Each epoch runs over the complete dataset once.
@@ -116,13 +97,4 @@ for fold, (train_ids, val_ids) in enumerate(kfold.split(train_dataset)):
             wf.write(
                 f'Fold: {fold:03d} / Epoch: {epoch:03d} | Loss: {test_loss.avg:.4f} | Acc: {test_acc.avg:.4f} | F1: {test_fscore.avg:.4f} | Kappa: {test_kappa.avg:.4f} \n')
             wf.close()    
-        
-        
-        # save_ckpt(model.state_dict(), test_acc.avg > max_acc, os.path.join(cfg.model_pth, 'a.pth')) 
-        # save_ckpt(model.state_dict(), test_fscore.avg > max_fscore, os.path.join(cfg.model_pth, 'f.pth'))        
-        # save_ckpt(model.state_dict(), test_kappa.avg > max_k, os.path.join(cfg.model_pth, 'k.pth'))
-            
-        # max_acc = max(max_acc, test_acc.avg)
-        # max_fscore = max(max_fscore, test_fscore.avg)
-        # max_k = max(max_k, test_kappa.avg)
         
